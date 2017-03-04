@@ -1,10 +1,3 @@
-<%-- 
-    Document   : index
-    Created on : Mar 1, 2017, 9:46:44 PM
-    Author     : Jason
---%>
-
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
