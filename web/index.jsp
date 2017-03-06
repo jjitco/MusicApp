@@ -36,6 +36,8 @@
 
 
 
+
+
         <form action="musicForm" method="post">
             <div class="nav">
                 <h1>Music Application</h1>
@@ -43,29 +45,31 @@
 
                     <c:if test ="${loginName == null}">
 
-
                         <li>Login</li>
                         <li>
-                            <form action="musicForm" method="post">
-                                <label >Username:</label>
-                                <input type="text" name="username" value=""><br>   
 
-                                <label >Password:</label>
-                                <input type="password" name="password" value="">   
+                            <label >Username:</label>
+                            <input type="text" name="username" value=""><br>   
 
-                                <form>
-                                    <input type="hidden" name="action" value="login">
-                                    <input type="submit" value="Login"></form>
+                            <label >Password:</label>
+                            <input type="password" name="password" value="">   
+
+                            <input type="submit" name ="action" value="Login">
+
 
                         </li>
-                        <li><a href="login.jsp">Sign Up</a></li>
+                        <li>
+                            <a href="login.jsp">
+                                <input type="button" value="Sign Up" />
+                            </a></li>
                     </ul>
                 </c:if>
 
                 <c:if test ="${loginName != null}">
                     <ul>
-                        <li>Hi ${user.username}!</li>
-                        <li><a>Sign out</a></li>
+                        <input type="hidden" name="loginName" value="${loginName}" />
+                        <li>Hi ${loginName}!</li>
+                        <li><a href=""><input type="submit" name="action" value="Log Out"></a></li>
                     </ul>
                 </c:if>
             </div>
@@ -85,14 +89,11 @@
                         <td>Kendrick Lamar</td>
                         <td>Good Kid Maad City</td>
                         <td>Hip Hop</td>
-                        <td>            
-
+                        <td>   
                             <input type="hidden" name="action" value="add">
-                            <input type="hidden" name="loginName" value="${loginName}" />
-                            <input type="submit" value="Add to Playlist">
+                            <input type="submit" value="Add to Playlist"></form>
                         </td>
                     </tr>
-
 
                     <tr>
                         <td>Palm Trees</td>

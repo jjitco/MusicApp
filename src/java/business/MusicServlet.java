@@ -26,32 +26,39 @@ public class MusicServlet extends HttpServlet {
         String url = "/index.jsp";
         String message = "";
         String errorMessage = "";
+        
         String loginName = request.getParameter("loginName");
-
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         User user = new User(username, password);
 
         if (action.equals("add")) {
+          //  System.out.println("LoginName: " + loginName);
             if (loginName == null || loginName.isEmpty()) {
                 message = "Login to add song";
                 request.setAttribute("message", message);
+       
             } else {
                 request.setAttribute("user", user);
                 message = "Added to Playlist";
+                request.setAttribute("loginName",loginName);
                 request.setAttribute("message", message);
-                
-            }
 
+            }
+            System.out.println("User:" + username);
         }
 
-        if (action.equals("login")) {
+        if (action.equals("Login")) {
 
             if (UserDB.userInfoMatches(username, password) == true) {
                 request.setAttribute("loginName", username);
                 request.setAttribute("user", user);
                 url = "/index.jsp";
             }
+        }
+        
+        if(action.equals("Log Out")){
+            request.setAttribute("loginName", null);
         }
 
         if (action.equals("register")) {
@@ -62,14 +69,13 @@ public class MusicServlet extends HttpServlet {
                     request.setAttribute("user", user);
                     request.setAttribute("loginName", username);
                     UserDB.insert(user);
-                    
-                    
+
                 } else {
                     errorMessage = "Passwords do not match";
                     request.setAttribute("errorMessage", errorMessage);
                     request.setAttribute("user", user);
                     url = "/login.jsp";
-                    
+
                 }
             } else {
                 errorMessage = "Username already exists";
