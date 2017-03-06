@@ -1,4 +1,5 @@
 package business;
+
 import data.*;
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,10 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author Jason
- */
 public class MusicServlet extends HttpServlet {
 
     @Override
@@ -28,43 +25,59 @@ public class MusicServlet extends HttpServlet {
         String action = request.getParameter("action");
         String url = "/index.jsp";
         String message = "";
+        String errorMessage = "";
+        String loginName = request.getParameter("loginName");
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         User user = new User(username, password);
 
-        System.out.println("LOADED:" + username);
-
         if (action.equals("add")) {
-
-            if (username == null || username.isEmpty()) {
+            if (loginName == null || loginName.isEmpty()) {
                 message = "Login to add song";
                 request.setAttribute("message", message);
-                System.out.println("add:" + username);
             } else {
                 request.setAttribute("user", user);
                 message = "Added to Playlist";
                 request.setAttribute("message", message);
+                
             }
 
         }
 
         if (action.equals("login")) {
-            username = request.getParameter("username");
-            password = request.getParameter("password");
-            user = new User(username, password);
-            request.setAttribute("user", user);
-            System.out.println("login:" + username);
-            UserDB.insert(user);
+
+            if (UserDB.userInfoMatches(username, password) == true) {
+                request.setAttribute("loginName", username);
+                request.setAttribute("user", user);
+                url = "/index.jsp";
+            }
+        }
+
+        if (action.equals("register")) {
+            String passwordConfirm = request.getParameter("passwordConfirm");
+
+            if (UserDB.userExists(username) == false) {
+                if (passwordConfirm.equals(password)) {
+                    request.setAttribute("user", user);
+                    request.setAttribute("loginName", username);
+                    UserDB.insert(user);
+                    
+                    
+                } else {
+                    errorMessage = "Passwords do not match";
+                    request.setAttribute("errorMessage", errorMessage);
+                    request.setAttribute("user", user);
+                    url = "/login.jsp";
+                    
+                }
+            } else {
+                errorMessage = "Username already exists";
+                request.setAttribute("errorMessage", errorMessage);
+                url = "/login.jsp";
+            }
 
         }
-        
-        if(action.equals("register")){
-            
-        
-        }
-        
-        
 
         getServletContext()
                 .getRequestDispatcher(url)
