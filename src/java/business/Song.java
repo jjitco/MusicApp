@@ -5,10 +5,10 @@ import java.io.Serializable;
 
 public class Song implements Serializable {
 
-    private String title;
-    private String artist;
-    private String album;
-    private String genre;
+    public String title;
+    public String artist;
+    public String album;
+    public String genre;
 
     public Song() {
 

@@ -9,6 +9,7 @@ import data.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,26 +27,33 @@ public class MusicServlet extends HttpServlet {
         String url = "/index.jsp";
         String message = "";
         String errorMessage = "";
-        
+
         String loginName = request.getParameter("loginName");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         User user = new User(username, password);
 
+//        ArrayList<Song> songList = SongDB.getSongs();
+//        request.setAttribute("songList", songList);
+
         if (action.equals("add")) {
-          //  System.out.println("LoginName: " + loginName);
             if (loginName == null || loginName.isEmpty()) {
                 message = "Login to add song";
                 request.setAttribute("message", message);
-       
+
             } else {
                 request.setAttribute("user", user);
                 message = "Added to Playlist";
-                request.setAttribute("loginName",loginName);
+                request.setAttribute("loginName", loginName);
                 request.setAttribute("message", message);
 
             }
-            System.out.println("User:" + username);
+        }
+        
+        if(action.equals("play")){
+            String nowPlaying = request.getParameter("nowPlaying");
+            request.setAttribute("nowPlaying", nowPlaying);
+        
         }
 
         if (action.equals("Login")) {
@@ -56,8 +64,8 @@ public class MusicServlet extends HttpServlet {
                 url = "/index.jsp";
             }
         }
-        
-        if(action.equals("Log Out")){
+
+        if (action.equals("Log Out")) {
             request.setAttribute("loginName", null);
         }
 
@@ -94,6 +102,7 @@ public class MusicServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
+
         doPost(request, response);
     }
 }

@@ -5,6 +5,10 @@
 --%>
 
 
+<%@page import="business.MusicServlet"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="data.SongDB"%>
+<%@page import="business.Song"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -22,6 +26,43 @@
 
         width:80px;
     }
+
+    .left{
+        float:left;
+        margin:auto;
+        width:20%;
+        
+    }
+    
+    .center{
+        margin: auto;
+        width: 50%;
+    }
+
+    table{
+
+    }
+
+    tr:hover{
+        background-color:lightcyan;
+    }
+
+    tr { list-style-type: none;}
+
+    .playing{
+        width:100%;
+        position:fixed;
+        bottom:0;
+        background-color:black;
+        color:white;
+        font-size:20px;
+        text-align: center;
+    }
+    
+    .functionButtons button:hover{
+        display: none;
+
+    }
 </style>
 
 
@@ -32,91 +73,109 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>MusicApp</title>
     </head>
+
     <body>
 
-
-
-
-
-        <form action="musicForm" method="post">
-            <div class="nav">
-                <h1>Music Application</h1>
-                <ul>
-
-                    <c:if test ="${loginName == null}">
-
-                        <li>Login</li>
-                        <li>
-
-                            <label >Username:</label>
-                            <input type="text" name="username" value=""><br>   
-
-                            <label >Password:</label>
-                            <input type="password" name="password" value="">   
-
-                            <input type="submit" name ="action" value="Login">
-
-
-                        </li>
-                        <li>
-                            <a href="login.jsp">
-                                <input type="button" value="Sign Up" />
-                            </a></li>
-                    </ul>
-                </c:if>
-
-                <c:if test ="${loginName != null}">
+        <div class="left">
+            <p>Playlists</p>
+            
+        </div>
+        
+        
+        <div class="center">
+            <form action="musicForm" method="post">
+                <div class="nav">
+                    <h1>Music Application</h1>
                     <ul>
-                        <input type="hidden" name="loginName" value="${loginName}" />
-                        <li>Hi ${loginName}!</li>
-                        <li><a href=""><input type="submit" name="action" value="Log Out"></a></li>
-                    </ul>
-                </c:if>
-            </div>
 
-            <div>
-                <h2>${message}</h2>
-                <table>
-                    <tr>
-                        <td>Song</td>
-                        <td>Artist</td>
-                        <td>Album</td>
-                        <td>Genre</td>
-                    </tr>
+                        <c:if test ="${loginName == null}">
 
-                    <tr>
-                        <td>Money Trees</td>
-                        <td>Kendrick Lamar</td>
-                        <td>Good Kid Maad City</td>
-                        <td>Hip Hop</td>
-                        <td>   
-                            <input type="hidden" name="action" value="add">
-                            <input type="submit" value="Add to Playlist"></form>
-                        </td>
-                    </tr>
+                            <li>
 
-                    <tr>
-                        <td>Palm Trees</td>
-                        <td>Flatbush Zombies</td>
-                        <td>BetterOffDead</td>
-                        <td>Hip Hop</td>
-                        <td>          
-                            <input type="hidden" name="action" value="add">
-                            <input type="submit" value="Add to Playlist">
-                        </td>
-                    </tr>
+                                <label >Username:</label>
+                                <input type="text" name="username" value=""><br>   
 
-                    <tr>
-                        <td>Gold Soul Theory</td>
-                        <td>The Underachievers</td>
-                        <td>Indigoism</td>
-                        <td>Hip Hop</td>
-                        <td>
-                            <input type="hidden" name="action" value="add">
-                            <input type="submit" value="Add to Playlist">
-                    </tr>
-                </table>
-            </div>
-        </form>
+                                <label >Password:</label>
+                                <input type="password" name="password" value="">   
+
+                                <input type="submit" name ="action" value="Login">
+
+                            </li>
+                            <li>
+                                <a href="login.jsp">
+                                    <input type="button" value="Sign Up" />
+                                </a></li>
+                        </ul>
+                    </c:if>
+
+                    <c:if test ="${loginName != null}">
+                        <ul>
+                            <input type="hidden" name="loginName" value="${loginName}" />
+                            <li>Hi ${loginName}!</li>
+                            <li><a href=""><input type="submit" name="action" value="Log Out"></a></li>
+                        </ul>
+                    </c:if>
+                    <hr>
+                </div>
+
+                <div>
+
+                    <h2>${message}</h2>
+
+                    <table>
+                        <tr>
+                            <td>Song</td>
+                            <td>Artist</td>
+                            <td>Album</td>
+                            <td>Genre</td>
+                        </tr>
+
+                        <%
+                            ArrayList<Song> songs = SongDB.getSongs();
+                            for (Song s : songs) {
+                        %>
+                        <tr>
+                            <td>
+                                <%=s.title%>
+                            </td>
+
+                            <td>
+                                <%=s.artist%>
+                            </td>
+                            <td>
+                                <%=s.album%>
+                            </td>
+
+                            <td>
+                                <%=s.genre%>
+                            </td>
+
+                        <div class="functionButtons">
+                            <form method="post">
+                                <td>   
+                                    <button type="submit" name="action" value="add">+</button>
+
+                                </td>
+                                <td>
+                                    <input type="hidden" name="nowPlaying" value="<%=s.title%>">
+                                    <button type="submit" name="action" value="play">></button>
+                                </td>
+                            </form>
+                        </div>
+
+                        </tr>
+
+                        <%}%>
+
+                    </table>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="playing">
+            <p>Now Playing: ${nowPlaying}</p>
+
+        </div>
     </body>
 </html>

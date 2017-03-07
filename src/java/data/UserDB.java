@@ -47,10 +47,10 @@ public class UserDB {
             DBUtil.closeResultSet(rs);
             DBUtil.closePreparedStatement(ps);
             pool.freeConnection(connection);
-        } 
+        }
     }
-    
-        public static boolean userInfoMatches(String username, String password) {
+
+    public static boolean userInfoMatches(String username, String password) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
@@ -71,7 +71,9 @@ public class UserDB {
             DBUtil.closeResultSet(rs);
             DBUtil.closePreparedStatement(ps);
             pool.freeConnection(connection);
-        } 
+        }
     }
+
+
 
 }
